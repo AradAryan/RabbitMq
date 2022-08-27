@@ -18,12 +18,12 @@ IHost host = Host.CreateDefaultBuilder(args)
                 cfg.ReceiveEndpoint("PersonQueue", rc =>
                 {
                     rc.Durable = true;
-                    rc.PrefetchCount = 1;
+                    rc.PrefetchCount = 100;
                     //rc.ConfigureConsumer<RabbitConsumer>(provider);
                     rc.Batch<PersonModel>(c =>
                     {
-                        c.MessageLimit = 100;
-                        c.ConcurrencyLimit = 100;
+                        c.MessageLimit = 10;
+                        c.ConcurrencyLimit = 1;
                         c.TimeLimit = TimeSpan.FromSeconds(1);
                         c.Consumer(() => new RabbitConsumer());
                     });
