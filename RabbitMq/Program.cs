@@ -15,18 +15,19 @@ IHost host = Host.CreateDefaultBuilder(args)
                     h.Username("guest");
                     h.Password("guest");
                 });
-                cfg.ReceiveEndpoint("PersonQueue", rc =>
+                cfg.ReceiveEndpoint("ReadyToSend", rc =>
                 {
                     rc.Durable = true;
-                    rc.PrefetchCount = 100;
-                    //rc.ConfigureConsumer<RabbitConsumer>(provider);
-                    rc.Batch<PersonModel>(c =>
-                    {
-                        c.MessageLimit = 10;
-                        c.ConcurrencyLimit = 1;
-                        c.TimeLimit = TimeSpan.FromSeconds(1);
-                        c.Consumer(() => new RabbitConsumer());
-                    });
+                    rc.UseRetry(c => c.Immediate(10));
+                    rc.PrefetchCount = 1;
+                    //rc.UseRateLimit(100,TimeSpan.FromSeconds(value: 60));
+                    rc.ConfigureConsumer<RabbitConsumer>(provider);
+                    //rc.Batch<PersonModel>(c =>
+                    //{
+                    //    c.MessageLimit = 110;
+                    //    c.ConcurrencyLimit = 10;
+                    //    c.Consumer<RabbitConsumer, PersonModel>(provider);
+                    //});
 
                 });
 

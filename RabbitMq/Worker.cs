@@ -20,13 +20,13 @@ namespace RabbitMq
             while (!stoppingToken.IsCancellationRequested)
             {
                 counter++;
-                var endpoint = await Bus.GetSendEndpoint(new Uri("queue:PersonQueue"));
+                var endpoint = await Bus.GetSendEndpoint(new Uri("queue:ReadyToSend"));
                 await endpoint.Send(new PersonModel
                 {
                     Id = counter
                 });
 
-                await Task.Delay(10000, stoppingToken);
+                //await Task.Delay(10000, stoppingToken);
             }
         }
     }
