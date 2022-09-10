@@ -18,16 +18,17 @@ IHost host = Host.CreateDefaultBuilder(args)
                 cfg.ReceiveEndpoint("ReadyToSend", rc =>
                 {
                     rc.Durable = true;
-                    rc.UseRetry(c => c.Immediate(10));
-                    rc.PrefetchCount = 1;
-                    //rc.UseRateLimit(100,TimeSpan.FromSeconds(value: 60));
-                    rc.ConfigureConsumer<RabbitConsumer>(provider);
-                    //rc.Batch<PersonModel>(c =>
-                    //{
-                    //    c.MessageLimit = 110;
-                    //    c.ConcurrencyLimit = 10;
-                    //    c.Consumer<RabbitConsumer, PersonModel>(provider);
-                    //});
+                    //rc.UseRetry(c => c.Immediate(1));
+                    rc.PrefetchCount = 1000;
+                    rc.UseRateLimit(10000, TimeSpan.FromMilliseconds(10000000));
+                    //rc.ConfigureConsumer<RabbitConsumer>(provider);
+                    rc.Batch<PersonModel>(c =>
+                    {
+                        c.MessageLimit = 1000;
+                        c.TimeLimit = TimeSpan.FromMilliseconds(200);
+                        c.ConcurrencyLimit = 5;
+                        c.Consumer<RabbitConsumer, PersonModel>(provider);
+                    });
 
                 });
 

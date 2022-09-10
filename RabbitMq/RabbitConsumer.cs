@@ -7,17 +7,16 @@ using System.Threading.Tasks;
 
 namespace RabbitMq
 {
-    internal class RabbitConsumer : IConsumer<PersonModel>
+    internal class RabbitConsumer : IConsumer<Batch<PersonModel>>
     {
         public RabbitConsumer()
         {
         }
 
-        public Task Consume(ConsumeContext<PersonModel> context)
+        public Task Consume(ConsumeContext<Batch<PersonModel>> context)
         {
-            throw new Exception("ride");
-            //Console.WriteLine(context.Message.Count());
-            //return Task.CompletedTask;
+            Console.WriteLine(context.Message.Count());
+            return Task.CompletedTask;
         }
 
     }
