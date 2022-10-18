@@ -1,4 +1,5 @@
 ﻿using MassTransit;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,16 +8,22 @@ using System.Threading.Tasks;
 
 namespace RabbitMq
 {
-    internal class RabbitConsumer : IConsumer<Batch<PersonModel>>
+    public class RabbitConsumer : IConsumer<Batch<BatchModel>>
     {
-        public RabbitConsumer()
+        public IBus Bus { get; set; }
+        public RabbitConsumer(IBus bus)
         {
+            Bus = bus;
         }
 
-        public Task Consume(ConsumeContext<Batch<PersonModel>> context)
+        public async Task Consume(ConsumeContext<Batch<BatchModel>> context)
         {
             Console.WriteLine(context.Message.Count());
-            return Task.CompletedTask;
+            var obj = context.Message.FirstOrDefault().Message;
+
+            //BatchModel test = new() { Data = JsonConvert.SerializeObject(context.Message.ToList()) };
+            //var sendEndPoint = await Bus.GetSendEndpoint(new("queue:ReadyToSend_Batch"));
+            //await sendEndPoint.Send(test);
         }
 
     }

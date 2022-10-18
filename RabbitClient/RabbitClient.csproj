@@ -4,13 +4,11 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <UserSecretsId>dotnet-RabbitMq-982774AA-664B-43D5-860D-361F16D5725F</UserSecretsId>
+    <UserSecretsId>dotnet-RabbitClient-BC400138-4CF9-4898-8226-C4AE5A100393</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="MassTransit" Version="8.0.7" />
-    <PackageReference Include="MassTransit.RabbitMQ" Version="8.0.7" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.1" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    <PackageReference Include="RabbitMQ.Client" Version="6.4.0" />
   </ItemGroup>
 </Project>
